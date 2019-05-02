@@ -100,13 +100,21 @@ class DepartmentDAO {
     func create(title: String!, addr: String!) -> Bool {
         
         do {
+            
+            guard title != nil && title?.isEmpty == false else {
+                return false
+            }
+            
+            guard addr != nil && addr?.isEmpty == false else {
+                return false
+            }
          
             let sql = """
                         INSERT INTO department(depart_title, depart_addr)
                              VALUES (?, ?)
                       """
         
-            try! self.fmdb.executeUpdate(sql, values: [title, addr])
+            try self.fmdb.executeUpdate(sql, values: [title, addr])
             return true
             
         } catch let error as NSError {
