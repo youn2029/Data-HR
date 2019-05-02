@@ -46,15 +46,15 @@ class DepartmentListVC: UITableViewController {
         
         let row = self.departList[indexPath.row]
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Depart_Cell")
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Depart_Cell") ?? UITableViewCell(style: .subtitle, reuseIdentifier: "Depart_Cell")
         
-        cell?.textLabel?.text = row.departTitle
-        cell?.textLabel?.font = .systemFont(ofSize: 14)
+        cell.textLabel?.text = row.departTitle
+        cell.textLabel?.font = .systemFont(ofSize: 14)
         
-        cell?.detailTextLabel?.text = row.departAddr
-        cell?.detailTextLabel?.font = .systemFont(ofSize: 12)
+        cell.detailTextLabel?.text = row.departAddr
+        cell.detailTextLabel?.font = .systemFont(ofSize: 12)
 
-        return cell!
+        return cell
     }
   
     // 부서 add Action
