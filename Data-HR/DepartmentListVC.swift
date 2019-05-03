@@ -76,8 +76,9 @@ class DepartmentListVC: UITableViewController {
                 self.tableView.reloadData()
                 
                 // 내비게이션 타이틀 갱신
-                let navTitle = self.navigationItem.titleView as! UILabel
-                navTitle.text = "부서 목록 \n "+"총 \(self.departList.count)개"
+                if let navTitle = self.navigationItem.titleView as? UILabel {
+                    navTitle.text = "부서 목록 \n "+"총 \(self.departList.count)개"
+                }
             }
         })
         
@@ -99,8 +100,9 @@ class DepartmentListVC: UITableViewController {
             tableView.deleteRows(at: [indexPath], with: .fade)
             
             // 내비게이션 타이틀 갱신
-            let navTitle = self.navigationItem.titleView as! UILabel
-            navTitle.text = "부서 목록 \n "+"총 \(self.departList.count)개"
+            if let navTitle = self.navigationItem.titleView as? UILabel {
+                navTitle.text = "부서 목록 \n "+"총 \(self.departList.count)개"
+            }
         }
     }
 }

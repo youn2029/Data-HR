@@ -13,6 +13,8 @@ class EmployeeListVC: UITableViewController {
     var empList: [EmployeeVO]!  // 사원 List
     let empDao = EmployeeDAO()
     
+    @IBOutlet var btnEdit: UIBarButtonItem!
+    
     func setUI(){
         
         // 내비게이션 타이틀
@@ -23,13 +25,6 @@ class EmployeeListVC: UITableViewController {
         navTitle.text = "사원 목록 \n"+"총 \(self.empList.count)개"
         
         self.navigationItem.titleView = navTitle
-        
-        // 내비게이션 편집 버튼
-        self.navigationItem.leftBarButtonItem = editButtonItem
-        self.tableView.isEditing = true                         // 편집 모드
-        
-        // 테이블 셀 개별 편집
-        self.tableView.allowsSelectionDuringEditing = true      // 개별 편집 모드
     }
     
     override func viewDidLoad() {
@@ -64,18 +59,65 @@ class EmployeeListVC: UITableViewController {
         
         let alert = UIAlertController(title: "사원 등록", message: "등록할 사원 정보를 입력해주세요", preferredStyle: .alert)
         
-        // cententViewContrller에 추가될 피커 뷰
-//        let pickerView = DepartPickerVC()
-//        alert.setValue(pickerView, forKey: "cententViewController")
+        // contentViewContrller에 추가될 피커 뷰
+        let pickerView = DepartPickerVC()
+        alert.setValue(pickerView, forKey: "contentViewController")
         
         alert.addTextField { (tf) in tf.placeholder = "사원명" }
         alert.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: "확인", style: .default) { (_) in
             
             // 사원 DB에 추가
+            var empVo = EmployeeVO()
+            
+            empVo.departCd = pickerView.selectDepartCd      // 부서코드
+            empVo.empName = (alert.textFields?[0].text)!    // 사원명
+            empVo.stateCd = EmpStateType.ING                // 재직상태
+            
+            let format = DateFormatter()
+            format.dateFormat = "yyyy-MM-dd"
+            empVo.joinDate = format.string(from: Date())    // 입사일
+            
+            
+            if self.empDao.create(param: empVo) {
+                self.empList = self.empDao.find()
+                self.tableView.reloadData()
+                
+                if let navTitle = self.navigationItem.titleView as? UILabel {
+                    navTitle.text = "사원 목록 \n" + "총 \(self.empList.count)개"
+                }                
+            }
         })
         
         self.present(alert, animated: false, completion: nil)
+    }
+    
+    @IBAction func editing(_ sender: Any) {
+        
+        if self.tableView.isEditing == false {
+            self.setEditing(true, animated: true)
+            (sender as? UIBarButtonItem)?.title = "Done"
+        }else {
+            self.setEditing(false, animated: true)
+            (sender as? UIBarButtonItem)?.title = "Edit"
+        }
+    }
+    
+    // 편집 모드에서 처리될 때 호출되는 메소드
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        
+        // 삭제될 사원코드
+        let empCd = self.empList[indexPath.row].empCd
+        
+        if self.empDao.delete(cd: empCd) {
+            self.empList = self.empDao.find()
+            tableView.reloadData()
+            
+            if let titleView = self.navigationItem.titleView as? UILabel {
+                titleView.text = "사원 목록 \n" + "총 \(self.empList.count)개"
+            }
+        }
+        
     }
     
 

@@ -128,6 +128,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="사원목록" id="R4x-Ri-fdU">
+                        <barButtonItem key="leftBarButtonItem" title="Edit" id="bN6-pS-xnc">
+                            <connections>
+                                <action selector="editing:" destination="aTg-NX-afx" id="dH9-S3-H6l"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="PHP-o8-gEK">
                             <connections>
                                 <action selector="add:" destination="aTg-NX-afx" id="tii-ws-fak"/>

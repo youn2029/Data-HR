@@ -22,6 +22,7 @@
 		4E421E48227AB32500A29E64 /* FMDatabaseQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E421E40227A995000A29E64 /* FMDatabaseQueue.m */; };
 		4E421E49227AB32500A29E64 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E421E3A227A994F00A29E64 /* FMDatabaseAdditions.m */; };
 		4E421E4A227AB32500A29E64 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E421E37227A994F00A29E64 /* FMResultSet.m */; };
+		4E421E4C227BD4D300A29E64 /* DepartPickerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E421E4B227BD4D300A29E64 /* DepartPickerVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +50,7 @@
 		4E421E41227A995000A29E64 /* FMDB.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FMDB.h; sourceTree = "<group>"; };
 		4E421E42227A9A2E00A29E64 /* DepartmentDAO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DepartmentDAO.swift; sourceTree = "<group>"; };
 		4E421E44227A9A5500A29E64 /* EmployeeDAO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeDAO.swift; sourceTree = "<group>"; };
+		4E421E4B227BD4D300A29E64 /* DepartPickerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DepartPickerVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +91,7 @@
 				4E421E30227A94A600A29E64 /* DepartmentListVC.swift */,
 				4E421E44227A9A5500A29E64 /* EmployeeDAO.swift */,
 				4E421E32227A94BF00A29E64 /* EmployeeListVC.swift */,
+				4E421E4B227BD4D300A29E64 /* DepartPickerVC.swift */,
 				4E421E11227A926E00A29E64 /* Assets.xcassets */,
 				4E421E13227A926E00A29E64 /* LaunchScreen.storyboard */,
 				4E421E16227A926E00A29E64 /* Info.plist */,
@@ -199,6 +202,7 @@
 				4E421E49227AB32500A29E64 /* FMDatabaseAdditions.m in Sources */,
 				4E421E47227AB32500A29E64 /* FMDatabasePool.m in Sources */,
 				4E421E43227A9A2E00A29E64 /* DepartmentDAO.swift in Sources */,
+				4E421E4C227BD4D300A29E64 /* DepartPickerVC.swift in Sources */,
 				4E421E31227A94A600A29E64 /* DepartmentListVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
