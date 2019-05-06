@@ -105,4 +105,23 @@ class DepartmentListVC: UITableViewController {
             }
         }
     }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        // 선택된 셀의 부서정보
+        let row = self.departList[indexPath.row]
+        
+        // 스토리 보드의 인스턴스 가져오기
+        let departInfoVC = self.storyboard?.instantiateViewController(withIdentifier: "Depart_Info")
+        
+        if let _infoVC = departInfoVC as? DepartmentInfoVC {    // 캐스팅
+            
+            // 부서코드를 전달
+            _infoVC.paramDepartCd = row.departCd
+            
+            // 화면 이동
+            self.navigationController?.pushViewController(_infoVC, animated: true)
+        }
+        
+    }
 }
