@@ -13,6 +13,9 @@ class EmployeeListVC: UITableViewController {
     var empList: [EmployeeVO]!  // 사원 List
     let empDao = EmployeeDAO()
     
+    var bgCircle: UIView!
+    var loadingImg: UIImageView!    // 커스텀 세로고침의 이미지 뷰
+    
     @IBOutlet var btnEdit: UIBarButtonItem!
     
     func setUI(){
@@ -32,6 +35,26 @@ class EmployeeListVC: UITableViewController {
         
         self.empList = self.empDao.find()
         self.setUI()
+        
+        // 당겨서 세로고침 기능
+        self.refreshControl = UIRefreshControl()
+//        self.refreshControl?.attributedTitle = NSAttributedString(string: "당겨서 새로고침")
+        self.refreshControl?.addTarget(self, action: #selector(pullToRefresh(_:)), for: .valueChanged)
+        
+        // 커스텀 세로고침의 이미지 뷰 설정
+        self.loadingImg = UIImageView(image: UIImage(named: "refresh"))
+        self.loadingImg.center.x = (self.refreshControl?.frame.width)! / 2
+        
+        // 배경 뷰 초기화 및 노란 원 형태를 위한 속성 설정
+        self.bgCircle = UIView()
+        self.bgCircle.backgroundColor = .yellow
+        self.bgCircle.center.x = (self.refreshControl?.frame.width)! / 2
+        
+        self.refreshControl?.addSubview(self.bgCircle)
+//        self.refreshControl?.bringSubviewToFront(self.loadingImg)     // 인자값으로 사용된 뷰를 가장 앞쪽으로 순서를 바꾼다는 메소드
+        
+        self.refreshControl?.tintColor = .clear
+        self.refreshControl?.addSubview(self.loadingImg)
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -117,8 +140,41 @@ class EmployeeListVC: UITableViewController {
                 titleView.text = "사원 목록 \n" + "총 \(self.empList.count)개"
             }
         }
-        
     }
     
-
+    // refreshControl에 연결할 메소드
+    @objc func pullToRefresh(_ sender: Any){
+        self.empList = self.empDao.find()
+        self.tableView.reloadData()
+        
+        // 당겨서 새로고침 기능 종료
+        self.refreshControl?.endRefreshing()
+        
+        // 노란 원이 로딩 이미지를 중심으로 커지는 애니메이션
+        let distance = max(0.0, -(self.refreshControl?.frame.origin.y)!)
+        UIView.animate(withDuration: 0.5) {
+            self.bgCircle.frame.size = CGSize(width: 80, height: 80)
+            self.bgCircle.center = CGPoint(x: (self.refreshControl?.frame.width)! / 2, y: distance / 2)
+            self.bgCircle.layer.cornerRadius = self.bgCircle.frame.width / 2
+        }
+    }
+    
+    // 스크롤되는 매 순간마다 호출되는 메소드
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        // 당긴 거리
+        let distance = max(0.0, -(self.refreshControl?.frame.origin.y)!)
+        self.loadingImg.center.y = distance / 2     // y좌표를 당긴 거리만큼 수정
+        
+        // 당긴 거리를 회전 각도로 변환하여 로딩 이미지에 설정
+        let ts = CGAffineTransform(rotationAngle: CGFloat(distance / 20))
+        self.loadingImg.transform = ts
+        
+        // 배경 뷰의 중심 좌표
+        self.bgCircle.center.y = distance / 2
+    }
+    
+    // 스르롤 뷰의 드래그가 끝났을 때 호출되는 메소드
+    override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        self.bgCircle.frame.size = CGSize(width: 0, height: 0)
+    }
 }
